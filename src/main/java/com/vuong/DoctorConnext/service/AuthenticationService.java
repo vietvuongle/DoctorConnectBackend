@@ -2,13 +2,9 @@ package com.vuong.DoctorConnext.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
-import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
-import com.vuong.DoctorConnext.dto.request.IntrospectRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
-import com.vuong.DoctorConnext.dto.response.response.IntrospectResponse;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.exception.ErrorCode;
@@ -24,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -41,22 +36,7 @@ public class AuthenticationService {
     @Value("${jwt.signerKey}")
     private String signerKey;
 
-    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
-        var token = request.getToken();
 
-        JWSVerifier verifier = new MACVerifier(signerKey.getBytes());
-
-        SignedJWT signedJWT = SignedJWT.parse(token);
-
-        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-
-        var verified = signedJWT.verify(verifier);
-
-        return IntrospectResponse.builder()
-                .valid(verified && expiryTime.after(new Date()))
-                .build();
-
-    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
         User user = userRepository.findByEmail(request.getEmail())
@@ -77,6 +57,20 @@ public class AuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse adminLogin(AuthenticationRequest request){
+        String token = null;
+        if (request.getEmail().equals("admin@gmail.com") && request.getPassword().equals("12345678")) {
+            token = generateToken();
+        }
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+    }
+
+
+
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
@@ -89,6 +83,30 @@ public class AuthenticationService {
                 ))
                 .claim("scope", buildScope(user))
                 .claim("userId", user.get_id())
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+
+        JWSObject jwsObject = new JWSObject(header, payload);
+
+        try {
+            jwsObject.sign(new MACSigner(signerKey.getBytes()));
+            return  jwsObject.serialize();
+        } catch (JOSEException e) {
+            log.error("Cannot create token");
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateToken() {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .issuer("vuong.com")
+                .issueTime(new Date())
+                .expirationTime(new Date(
+                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                ))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());

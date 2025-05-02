@@ -14,7 +14,7 @@ public interface UserMapper {
     User toUser(UserCreationRequest request);
     UserResponse toUserResponse(User user);
 
-    @Mapping(target = "image", ignore = true) // Password sẽ được xử lý riêng
+    @Mapping(target = "image", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 
 }

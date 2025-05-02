@@ -1,0 +1,12 @@
+package com.vuong.DoctorConnext.repository;
+
+import com.vuong.DoctorConnext.entity.Doctor;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface DoctorRepository extends JpaRepository<Doctor, String> {
+    boolean existsByEmail(String email);
+    Optional<Doctor> findByName(String name);
+    Optional<Doctor> findByEmail(String email);
+}
