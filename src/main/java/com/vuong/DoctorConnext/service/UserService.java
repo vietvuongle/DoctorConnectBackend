@@ -58,8 +58,6 @@ public class UserService {
 
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userMapper.updateUser(user, request);

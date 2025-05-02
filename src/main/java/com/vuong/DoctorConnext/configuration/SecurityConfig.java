@@ -28,7 +28,12 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/api/user/register", "/api/user/login"};
+    private final String[] PUBLIC_ENDPOINTS = {
+            "/api/user/register",
+            "/api/user/login",
+            "/api/admin/add-doctor",
+            "/api/admin/login"
+    };
 
     @Value("${jwt.signerKey}")
     private String signerKey;
@@ -54,7 +59,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5175"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5175", "http://localhost:5176"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
