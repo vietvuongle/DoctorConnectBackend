@@ -2,10 +2,13 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
+import com.vuong.DoctorConnext.dto.request.DepartmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.DoctorCreationRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.service.AuthenticationService;
+import com.vuong.DoctorConnext.service.DepartmentService;
 import com.vuong.DoctorConnext.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     @Autowired
     DoctorService doctorService;
+    DepartmentService departmentService;
 
     AuthenticationService authenticationService;
 
@@ -34,6 +38,14 @@ public class AdminController {
         apiResponse.setResult(doctorService.createDoctor(request));
 
         return apiResponse;
+    }
+
+    @PostMapping("/add-department")
+    ApiResponse<Department> addDepartment(@ModelAttribute @Valid DepartmentCreationRequest request) {
+        ApiResponse<Department> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(departmentService.createDepartment(request));
+
+        return  apiResponse;
     }
 
     @PostMapping("/login")
