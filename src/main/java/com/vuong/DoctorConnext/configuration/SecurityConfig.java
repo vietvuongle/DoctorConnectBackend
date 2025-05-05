@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/api/user/register",
             "/api/user/login",
             "/api/admin/add-doctor",
-            "/api/admin/login"
+            "/api/admin/login",
+            "/api/admin/add-department"
     };
 
     @Value("${jwt.signerKey}")
