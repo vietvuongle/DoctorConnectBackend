@@ -31,7 +31,7 @@ public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/user/register",
             "/api/user/login",
-            "/api/admin/add-doctor",
+            "/api/admin/*",
             "/api/admin/login",
             "/api/admin/add-department"
     };
@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/admin/all-department", "/api/admin/all-doctor").permitAll()
                                 .requestMatchers("/api/user/get-profile").permitAll()
                                 .anyRequest().authenticated()
                 )

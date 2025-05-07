@@ -24,4 +24,6 @@ public class DoctorCreationRequest {
     String sex;
     String phone;
     String address;
+    String school;
+
 }

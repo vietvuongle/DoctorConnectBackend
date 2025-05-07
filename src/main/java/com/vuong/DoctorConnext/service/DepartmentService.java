@@ -2,6 +2,7 @@ package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.DepartmentCreationRequest;
+import com.vuong.DoctorConnext.dto.response.DepartmentResponse;
 import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Builder
@@ -47,5 +49,9 @@ public class DepartmentService {
         }
 
         return departmentRepository.save(department);
+    }
+
+    public List<DepartmentResponse> getDepartments() {
+        return departmentRepository.findAll().stream().map(departmentMapper::toDepartmentResponse).toList();
     }
 }

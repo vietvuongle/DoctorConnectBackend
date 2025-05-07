@@ -5,6 +5,8 @@ import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.request.DepartmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.DoctorCreationRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.dto.response.DepartmentResponse;
+import com.vuong.DoctorConnext.dto.response.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.service.AuthenticationService;
@@ -17,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,6 +38,7 @@ public class AdminController {
 
     @PostMapping("/add-doctor")
     ApiResponse<Doctor> addDoctor(@ModelAttribute  @Valid DoctorCreationRequest request) {
+        log.error(request.toString());
         ApiResponse<Doctor> apiResponse = new ApiResponse<>();
         apiResponse.setResult(doctorService.createDoctor(request));
 
@@ -53,6 +58,20 @@ public class AdminController {
         var result = authenticationService.adminLogin(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
+                .build();
+    }
+
+    @GetMapping("/all-department")
+    ApiResponse<List<DepartmentResponse>> getDepartment() {
+        return ApiResponse.<List<DepartmentResponse>>builder()
+                .result(departmentService.getDepartments())
+                .build();
+    }
+
+    @GetMapping("/all-doctor")
+    ApiResponse<List<DoctorResponse>> getDoctor() {
+        return ApiResponse.<List<DoctorResponse>>builder()
+                .result(doctorService.getDoctor())
                 .build();
     }
 

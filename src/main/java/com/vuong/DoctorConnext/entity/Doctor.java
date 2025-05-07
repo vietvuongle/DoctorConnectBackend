@@ -32,5 +32,6 @@ public class Doctor {
     String sex;
     String phone;
     String address;
+    String school;
     Set<String> roles;
 }
