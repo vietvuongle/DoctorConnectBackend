@@ -1,8 +1,8 @@
 package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
-import com.vuong.DoctorConnext.dto.request.DoctorCreationRequest;
-import com.vuong.DoctorConnext.dto.response.DoctorResponse;
+import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;

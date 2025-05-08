@@ -1,9 +1,9 @@
 package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
-import com.vuong.DoctorConnext.dto.request.UserCreationRequest;
-import com.vuong.DoctorConnext.dto.request.UserUpdateRequest;
-import com.vuong.DoctorConnext.dto.response.UserResponse;
+import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
+import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashSet;

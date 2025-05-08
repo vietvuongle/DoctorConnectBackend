@@ -2,9 +2,9 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
-import com.vuong.DoctorConnext.dto.request.UserCreationRequest;
-import com.vuong.DoctorConnext.dto.request.UserUpdateRequest;
-import com.vuong.DoctorConnext.dto.response.UserResponse;
+import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
+import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.service.UserService;
 import jakarta.validation.Valid;

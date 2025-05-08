@@ -33,7 +33,9 @@ public class SecurityConfig {
             "/api/user/login",
             "/api/admin/*",
             "/api/admin/login",
-            "/api/admin/add-department"
+            "/api/admin/add-department",
+            "/api/admin/update-department"
+
     };
 
     @Value("${jwt.signerKey}")
@@ -47,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/admin/all-department", "/api/admin/all-doctor").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,  "/api/admin/delete-department/{departmentId}").permitAll()
                                 .requestMatchers("/api/user/get-profile").permitAll()
                                 .anyRequest().authenticated()
                 )

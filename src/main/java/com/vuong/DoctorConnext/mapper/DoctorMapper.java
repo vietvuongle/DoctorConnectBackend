@@ -1,7 +1,7 @@
 package com.vuong.DoctorConnext.mapper;
 
-import com.vuong.DoctorConnext.dto.request.DoctorCreationRequest;
-import com.vuong.DoctorConnext.dto.response.DoctorResponse;
+import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Doctor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

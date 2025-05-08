@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.response;
+package com.vuong.DoctorConnext.dto.response.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,15 +6,13 @@ import lombok.experimental.FieldDefaults;
 import java.util.Set;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DepartmentResponse {
-    String id;
-
+public class UserResponse {
+    String _id;
     String name;
-    String description;
-    String iconImage;
+    String email;
     Set<String> roles;
 }

@@ -1,8 +1,8 @@
 package com.vuong.DoctorConnext.mapper;
 
-import com.vuong.DoctorConnext.dto.request.UserCreationRequest;
-import com.vuong.DoctorConnext.dto.request.UserUpdateRequest;
-import com.vuong.DoctorConnext.dto.response.UserResponse;
+import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
+import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

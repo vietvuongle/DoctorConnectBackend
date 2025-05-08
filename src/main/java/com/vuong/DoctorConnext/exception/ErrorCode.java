@@ -15,6 +15,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     DEPARTMENT_EXISTED(1008, "Department existed", HttpStatus.BAD_REQUEST),
+    DEPARTMENT_NOT_FOUND(1009, "Department not found", HttpStatus.NOT_FOUND),
+    INTERNAL_SERVER_ERROR(1010, "Can not delete", HttpStatus.BAD_REQUEST)
 
     ;
 
