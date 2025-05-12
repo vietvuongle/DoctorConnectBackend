@@ -56,5 +56,13 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @GetMapping("/profile")
+    public ApiResponse<UserResponse> getUser() {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getUser());
+
+        return apiResponse;
+    }
+
 
 }

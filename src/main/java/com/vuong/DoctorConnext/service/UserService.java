@@ -75,4 +75,11 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
+    public UserResponse getUser() {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toUserResponse(user);
+    }
+
 }
