@@ -15,6 +15,7 @@ import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.service.AuthenticationService;
 import com.vuong.DoctorConnext.service.DepartmentService;
 import com.vuong.DoctorConnext.service.DoctorService;
+import com.vuong.DoctorConnext.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,6 @@ public class AdminController {
 
     @PostMapping("/add-doctor")
     ApiResponse<Doctor> addDoctor(@ModelAttribute  @Valid DoctorCreationRequest request) {
-        log.error(request.toString());
         ApiResponse<Doctor> apiResponse = new ApiResponse<>();
         apiResponse.setResult(doctorService.createDoctor(request));
 
@@ -94,5 +94,7 @@ public class AdminController {
             return ResponseEntity.status(500).body("Xóa khoa thất bại: " + e.getMessage());
         }
     }
+
+
 
 }

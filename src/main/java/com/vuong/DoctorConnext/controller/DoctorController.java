@@ -7,21 +7,22 @@ import com.vuong.DoctorConnext.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/doctor")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5176")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationController {
+public class DoctorController {
+
     AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    ApiResponse<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
-        var result = authenticationService.authenticateUser(request);
+    ApiResponse<AuthenticationResponse> authenticateDoctor(@RequestBody AuthenticationRequest request) {
+        var result = authenticationService.authenticateDoctor(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
                 .build();

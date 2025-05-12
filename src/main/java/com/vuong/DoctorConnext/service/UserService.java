@@ -37,8 +37,24 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
     public User createUser(UserCreationRequest request) {
-        if(userRepository.existsByName(request.getName()))
+        if(userRepository.existsByEmail(request.getEmail()))
             throw new AppException(ErrorCode.USER_EXISTED);
+
+        // Kiểm tra null hoặc trống
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new AppException(ErrorCode.INVALID_NAME);
+        }
+
+        // Kiểm tra độ dài tên
+        if (request.getName().length() < 3 || request.getName().length() > 20) {
+            throw new AppException(ErrorCode.INVALID_NAME1);
+        }
+
+        // Kiểm tra định dạng tên (chỉ chữ cái và số, không chứa ký tự đặc biệt)
+        if (!request.getName().matches("^[a-zA-Z0-9]+$")) {
+            throw new AppException(ErrorCode.INVALID_NAME2);
+        }
+
         User user = userRegisMapper.toUser(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -49,7 +65,6 @@ public class UserService {
 
         return userRepository.save(user);
     }
-
 
 
 
@@ -72,6 +87,13 @@ public class UserService {
         }
 
         return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    public UserResponse getUser() {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toUserResponse(user);
     }
 
 }
