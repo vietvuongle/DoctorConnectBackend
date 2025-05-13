@@ -31,6 +31,7 @@ public class Appointment {
     String gender;
     boolean cancelled;
     boolean payment;
+    boolean isConfirm;
     boolean isCompleted;
     String dateBooking;
 }

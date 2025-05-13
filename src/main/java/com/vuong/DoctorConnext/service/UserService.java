@@ -16,8 +16,10 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -67,7 +69,6 @@ public class UserService {
     }
 
 
-
     public UserResponse updateUser(UserUpdateRequest request) {
 
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -90,10 +91,26 @@ public class UserService {
     }
 
     public UserResponse getUser() {
-        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String userId;
+
+        // Kiểm tra xem principal có phải là một đối tượng Jwt không
+        if (principal instanceof Jwt) {
+            Jwt jwt = (Jwt) principal;
+            userId = jwt.getClaim("userId"); // Hoặc claim khác tùy theo cấu trúc của JWT
+        } else if (principal instanceof String) {
+            userId = (String) principal;
+        } else {
+            throw new RuntimeException("Principal is neither a Jwt nor a String");
+        }
+
+        // Tìm người dùng theo userId
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         return userMapper.toUserResponse(user);
     }
+
 
 }

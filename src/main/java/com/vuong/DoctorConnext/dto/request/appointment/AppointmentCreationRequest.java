@@ -20,6 +20,7 @@ public class AppointmentCreationRequest {
     String phone;
     String dob;
     String gender;
+    boolean isConfirm;
     boolean cancelled;
     boolean payment;
     boolean isCompleted;

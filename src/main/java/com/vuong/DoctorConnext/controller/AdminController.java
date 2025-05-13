@@ -7,15 +7,13 @@ import com.vuong.DoctorConnext.dto.request.department.DepartmentUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.department.DepartmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.entity.Doctor;
-import com.vuong.DoctorConnext.service.AuthenticationService;
-import com.vuong.DoctorConnext.service.DepartmentService;
-import com.vuong.DoctorConnext.service.DoctorService;
-import com.vuong.DoctorConnext.service.UserService;
+import com.vuong.DoctorConnext.service.*;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +35,7 @@ public class AdminController {
     @Autowired
     DoctorService doctorService;
     DepartmentService departmentService;
+    AppointmentService appointmentService;
 
     AuthenticationService authenticationService;
 
@@ -76,6 +75,14 @@ public class AdminController {
     ApiResponse<List<DoctorResponse>> getDoctor() {
         return ApiResponse.<List<DoctorResponse>>builder()
                 .result(doctorService.getDoctor())
+                .build();
+    }
+
+
+    @GetMapping("/all-appointment")
+    ApiResponse<List<AppointmentResponse>> getAppointments() {
+        return ApiResponse.<List<AppointmentResponse>>builder()
+                .result(appointmentService.getAppointments())
                 .build();
     }
 

@@ -3,7 +3,9 @@ package com.vuong.DoctorConnext.controller;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.service.AuthenticationService;
+import com.vuong.DoctorConnext.service.DoctorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
 
     AuthenticationService authenticationService;
+    DoctorService doctorService;
 
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticateDoctor(@RequestBody AuthenticationRequest request) {
@@ -27,4 +30,22 @@ public class DoctorController {
                 .result(result)
                 .build();
     }
+
+    @GetMapping("/{doctorId}")
+    public ApiResponse<DoctorResponse> getDoctorById(@PathVariable("doctorId") String doctorId) {
+        ApiResponse<DoctorResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(doctorService.getDoctorById(doctorId));
+
+        return apiResponse;
+    }
+
+    @GetMapping("/getDoctor")
+    public ApiResponse<DoctorResponse> getDoctorById(){
+        ApiResponse<DoctorResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(doctorService.getDoctorById());
+
+        return apiResponse;
+    }
+
+
 }

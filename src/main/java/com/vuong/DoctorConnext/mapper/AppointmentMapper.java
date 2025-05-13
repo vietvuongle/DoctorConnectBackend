@@ -1,6 +1,7 @@
 package com.vuong.DoctorConnext.mapper;
 
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,5 +13,9 @@ public interface AppointmentMapper {
     @Mapping(target = "cancelled", ignore = true)
     @Mapping(target = "payment", ignore = true)
     @Mapping(target = "isCompleted", ignore = true)
+    @Mapping(target = "isConfirm", ignore = true)
     Appointment toAppointmentMapper(AppointmentCreationRequest request);
+
+    AppointmentResponse toAppointmentResponse(Appointment appointment);
+
 }

@@ -14,7 +14,11 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -55,7 +59,25 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
+//    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('USER')")
     public List<DoctorResponse> getDoctor() {
         return doctorRepository.findAll().stream().map(doctorMapper::toDoctorResponse).toList();
+    }
+
+    public DoctorResponse getDoctorById(String doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return doctorMapper.toDoctorResponse(doctor);
+    }
+
+    public DoctorResponse getDoctorById() {
+        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails();  // Lấy doctorId từ details
+
+        // Tìm người dùng theo userId
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return doctorMapper.toDoctorResponse(doctor);
     }
 }
