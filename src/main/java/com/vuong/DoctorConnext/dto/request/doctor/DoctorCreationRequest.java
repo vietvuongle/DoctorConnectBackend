@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.request;
+package com.vuong.DoctorConnext.dto.request.doctor;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;

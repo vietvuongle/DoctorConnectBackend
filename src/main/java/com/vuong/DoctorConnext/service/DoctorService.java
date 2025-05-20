@@ -1,7 +1,8 @@
 package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
-import com.vuong.DoctorConnext.dto.request.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
@@ -13,11 +14,13 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Builder
@@ -37,7 +40,6 @@ public class DoctorService {
         Doctor doctor = doctorMapper.toDoctor(request);
 
         doctor.setPassword(passwordEncoder.encode(request.getPassword()));
-
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.DOCTOR.name());
         doctor.setRoles(roles);
@@ -52,5 +54,27 @@ public class DoctorService {
         }
 
         return doctorRepository.save(doctor);
+    }
+
+    public List<DoctorResponse> getDoctor() {
+        return doctorRepository.findAll().stream().map(doctorMapper::toDoctorResponse).toList();
+    }
+
+
+
+    public DoctorResponse getDoctorById(String doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return doctorMapper.toDoctorResponse(doctor);
+    }
+
+    public DoctorResponse getDoctorById() {
+        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails();  // Lấy doctorId từ details
+
+        // Tìm người dùng theo userId
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return doctorMapper.toDoctorResponse(doctor);
     }
 }

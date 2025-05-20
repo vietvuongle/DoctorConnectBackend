@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.response;
+package com.vuong.DoctorConnext.dto.response.department;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

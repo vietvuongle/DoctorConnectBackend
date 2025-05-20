@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.response;
+package com.vuong.DoctorConnext.dto.response.doctor;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,5 +23,6 @@ public class DoctorResponse {
     String sex;
     String phone;
     String address;
+    String school;
     Set<String> roles;
 }

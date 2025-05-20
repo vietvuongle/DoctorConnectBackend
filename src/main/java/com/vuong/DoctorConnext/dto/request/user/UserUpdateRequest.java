@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.request;
+package com.vuong.DoctorConnext.dto.request.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
