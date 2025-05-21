@@ -10,13 +10,10 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -31,25 +28,8 @@ public class AppointmentController {
 
     JWTUtils jwtUtils;
 
-//        @PostMapping
-//        public ApiResponse<Appointment> createAppointment(@RequestBody @Valid AppointmentCreationRequest request) {
-//            ApiResponse<Appointment> response = new ApiResponse<>();
-//            response.setResult(appointmentService.createAppointment(request));
-//            return response;
-//        }
-
     @PostMapping
-    public ApiResponse<Appointment> createAppointment(
-            @RequestHeader("Authorization") String authHeader,
-            @RequestBody @Valid AppointmentCreationRequest request) {
-
-        // Lấy token từ header, thường dạng "Bearer ey...."
-        String token = authHeader.replace("Bearer ", "");
-        // Extract userId từ token
-        String userId = jwtUtils.extractUserId(token);
-        // Gán userId vào request (nếu cần là Long thì parse)
-        request.setUserId(userId);
-
+    public ApiResponse<Appointment> createAppointment(@RequestBody @Valid AppointmentCreationRequest request) {
         ApiResponse<Appointment> response = new ApiResponse<>();
         response.setResult(appointmentService.createAppointment(request));
         return response;
@@ -57,11 +37,5 @@ public class AppointmentController {
 
 
 
-    @GetMapping("/my")
-    public ResponseEntity<List<Appointment>> getMyAppointments() {
-        List<Appointment> appointments = appointmentService.getMyAppointments();
-        // Trả về mảng trống nếu không có lịch hẹn, không trả chuỗi.
-        return ResponseEntity.ok(appointments);
-    }
 
 }

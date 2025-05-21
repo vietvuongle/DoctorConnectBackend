@@ -4,12 +4,14 @@ import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
+import com.vuong.DoctorConnext.dto.request.password.PasswordChangeRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
+import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.service.AppointmentService;
 
 import com.vuong.DoctorConnext.service.UserService;

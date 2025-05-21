@@ -162,31 +162,6 @@ public class UserService {
         return response;
     }
 
-    public UserResponse getUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        String userId;
-
-        // Kiểm tra xem principal có phải là một đối tượng Jwt không
-        if (principal instanceof Jwt) {
-            Jwt jwt = (Jwt) principal;
-            userId = jwt.getClaim("userId"); // Hoặc claim khác tùy theo cấu trúc của JWT
-        } else if (principal instanceof String) {
-            userId = (String) principal;
-        } else {
-            throw new RuntimeException("Principal is neither a Jwt nor a String");
-        }
-
-        // Tìm người dùng theo userId
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        UserResponse userResponse = userMapper.toUserResponse(user);
-        userResponse.set_id(user.get_id());
-
-        return userResponse;
-    }
-
     public List<AppointmentResponse> getAppointmentsByUserId() {
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
 
