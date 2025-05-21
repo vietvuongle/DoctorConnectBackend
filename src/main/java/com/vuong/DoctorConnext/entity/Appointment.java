@@ -35,3 +35,4 @@ public class Appointment {
     boolean isCompleted;
     String dateBooking;
 }
+

@@ -2,10 +2,12 @@ package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
+
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
@@ -64,11 +66,11 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-//    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
-//    @PreAuthorize("hasRole('USER')")
+
     public List<DoctorResponse> getDoctor() {
         return doctorRepository.findAll().stream().map(doctorMapper::toDoctorResponse).toList();
     }
+
 
     public DoctorResponse getDoctorById(String doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId)
@@ -85,6 +87,7 @@ public class DoctorService {
 
         return doctorMapper.toDoctorResponse(doctor);
     }
+
 
     public List<AppointmentResponse> getAppointmentsByDoctorId() {
         String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
@@ -143,3 +146,4 @@ public class DoctorService {
         return doctorMapper.toDoctorResponse(doctorRepository.save(doctor));
     }
 }
+

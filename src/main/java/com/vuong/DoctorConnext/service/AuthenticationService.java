@@ -106,7 +106,9 @@ public class AuthenticationService {
     }
 
 
+
     public String generateTokenUser(User user) {
+
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
@@ -185,6 +187,7 @@ public class AuthenticationService {
         }
     }
 
+
     private String[] buildScopeUser(User user) {
         List<String> roles = new ArrayList<>();
         if (!CollectionUtils.isEmpty(user.getRoles())) {
@@ -200,5 +203,13 @@ public class AuthenticationService {
             roles.addAll(doctor.getRoles());
 
         return roles.toArray(new String[0]);
+    }
+
+    private String buildScopeDoctor(Doctor doctor) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(doctor.getRoles()))
+            doctor.getRoles().forEach(stringJoiner::add);
+
+        return stringJoiner.toString();
     }
 }

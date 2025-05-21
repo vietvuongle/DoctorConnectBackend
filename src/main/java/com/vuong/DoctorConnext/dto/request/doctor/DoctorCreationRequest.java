@@ -25,5 +25,4 @@ public class DoctorCreationRequest {
     String phone;
     String address;
     String school;
-
 }

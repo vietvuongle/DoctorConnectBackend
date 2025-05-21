@@ -12,6 +12,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentResponse {
     String id;
+
     String name;
     String description;
     String iconImage;

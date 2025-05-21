@@ -1,8 +1,10 @@
 package com.vuong.DoctorConnext.service;
 
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
+
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.department.DepartmentResponse;
+
 import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.mapper.AppointmentMapper;
 import com.vuong.DoctorConnext.repository.AppointmentRepository;
@@ -11,7 +13,9 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,7 @@ import java.util.List;
 public class AppointmentService {
     AppointmentRepository appointmentRepository;
     AppointmentMapper appointmentMapper;
+
 
     public Appointment createAppointment(AppointmentCreationRequest request) {
 
@@ -48,3 +53,4 @@ public class AppointmentService {
         return appointmentRepository.findAll().stream().map(appointmentMapper::toAppointmentResponse).toList();
     }
 }
+

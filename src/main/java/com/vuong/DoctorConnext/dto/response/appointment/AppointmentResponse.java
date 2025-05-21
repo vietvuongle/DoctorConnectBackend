@@ -27,3 +27,4 @@ public class AppointmentResponse {
     boolean completed;
     String dateBooking;
 }
+

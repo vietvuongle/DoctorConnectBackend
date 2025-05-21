@@ -2,6 +2,7 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
+
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
@@ -10,6 +11,7 @@ import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.service.AppointmentService;
+
 import com.vuong.DoctorConnext.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -78,12 +80,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-//    @GetMapping("/profile")
-//    public ResponseEntity<UserResponse> getUserProfile() {
-//        UserResponse userResponse = userService.getUser();
-//        return ResponseEntity.ok(userResponse);
-//    }
-    
+
     @GetMapping("/profile")
     public ApiResponse<UserResponse> getUser() {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -91,6 +88,23 @@ public class UserController {
 
         return apiResponse;
     }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<String>> changePassword(@RequestBody @Valid PasswordChangeRequest request) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        try {
+            userService.changePassword(request.getCurrentPassword(), request.getNewPassword());
+            apiResponse.setResult("Password updated successfully");
+            return ResponseEntity.ok(apiResponse);
+        } catch (AppException e) {
+            apiResponse.setResult("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        } catch (Exception e) {
+            apiResponse.setResult("An error occurred while changing password");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
+    }
+
 
 
 }

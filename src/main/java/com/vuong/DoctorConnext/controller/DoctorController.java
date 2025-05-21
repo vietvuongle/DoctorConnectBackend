@@ -10,14 +10,17 @@ import com.vuong.DoctorConnext.service.AppointmentService;
 import com.vuong.DoctorConnext.service.AuthenticationService;
 import com.vuong.DoctorConnext.service.DoctorService;
 import com.vuong.DoctorConnext.service.UserService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -29,6 +32,7 @@ public class DoctorController {
 
     AuthenticationService authenticationService;
     DoctorService doctorService;
+
 
     UserService userService;
 
@@ -48,6 +52,7 @@ public class DoctorController {
         return apiResponse;
     }
 
+
     @GetMapping("/getUser/{userId}")
     public ApiResponse<UserResponse> getUserByUserId(@PathVariable("userId") String userId) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -56,6 +61,7 @@ public class DoctorController {
         return apiResponse;
     }
 
+
     @GetMapping("/getDoctor")
     public ApiResponse<DoctorResponse> getDoctorById(){
         ApiResponse<DoctorResponse> apiResponse = new ApiResponse<>();
@@ -63,6 +69,7 @@ public class DoctorController {
 
         return apiResponse;
     }
+
 
     @GetMapping("/appointments")
     public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
@@ -91,3 +98,4 @@ public class DoctorController {
     }
 
 }
+

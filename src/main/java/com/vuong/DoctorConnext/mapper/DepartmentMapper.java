@@ -19,4 +19,6 @@ public interface DepartmentMapper {
 
     @Mapping(target = "iconImage", ignore = true)
     void updateDepartment(@MappingTarget Department department, DepartmentUpdateRequest request);
+
 }
+

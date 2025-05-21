@@ -3,6 +3,7 @@ package com.vuong.DoctorConnext.service;
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
@@ -71,6 +72,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         HashSet<String> roles = new HashSet<>();
+
         roles.add(Role.USER.name());
         user.setRoles(roles);
 
@@ -79,25 +81,76 @@ public class UserService {
 
 
     public UserResponse updateUser(UserUpdateRequest request) {
-
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        userMapper.updateUser(user, request);
 
-        // Xử lý cập nhật ảnh nếu có file được gửi lên
+        // Kiểm tra và cập nhật các trường nếu có giá trị
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            user.setName(request.getName());
+        }
+
+        if (request.getPhone() != null && !request.getPhone().isEmpty()) {
+            user.setPhone(request.getPhone());
+        }
+
+        if (request.getDob() != null && !request.getDob().isEmpty()) {
+            user.setDob(request.getDob());
+        }
+
+        if (request.getGender() != null && !request.getGender().isEmpty()) {
+            user.setGender(request.getGender());
+        }
+
+        if (request.getAddress() != null && !request.getAddress().isEmpty()) {
+            user.setAddress(request.getAddress());
+        }
+
+        // Xử lý ảnh nếu có
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             try {
                 String imageUrl = cloudinaryService.getImageUrlAfterUpload(request.getImage());
-                user.setImage(imageUrl); // Giả sử entity User có trường avatarUrl
+                user.setImage(imageUrl);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to upload avatar", e);
             }
         }
 
+        // Lưu user đã cập nhật
         return userMapper.toUserResponse(userRepository.save(user));
     }
+
+
+
+    public UserResponse getUser() {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toUserResponse(user);
+    }
+
+    public void changePassword(String currentPassword, String newPassword) {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS); // Mật khẩu cũ không chính xác
+        }
+
+        // Kiểm tra độ dài của mật khẩu mới (nếu có yêu cầu)
+        if (newPassword.length() < 6) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        // Lưu thông tin người dùng sau khi thay đổi mật khẩu
+        userRepository.save(user);
+    }
+
 
     public  UserResponse getUserByUserId(String userId) {
         User user = userRepository.findById(userId)
@@ -147,6 +200,5 @@ public class UserService {
 
         return appointmentMapper.toAppointmentResponseList(appointments);
     }
-
 
 }
