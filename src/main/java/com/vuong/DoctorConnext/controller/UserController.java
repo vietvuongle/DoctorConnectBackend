@@ -5,6 +5,7 @@ import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -54,6 +56,12 @@ public class UserController {
         return  apiResponse;
     }
 
+    @GetMapping("/appointments")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
+        List<AppointmentResponse> appointments = userService.getAppointmentsByUserId();
+        return ResponseEntity.ok(appointments);
+    }
+
     @PostMapping("/uploadImage")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -64,7 +72,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/get-profile")
+    @PutMapping("/update-profile")
     public ResponseEntity<UserResponse> updateUser(@ModelAttribute UserUpdateRequest request) {
         UserResponse updatedUser = userService.updateUser(request);
         return ResponseEntity.ok(updatedUser);

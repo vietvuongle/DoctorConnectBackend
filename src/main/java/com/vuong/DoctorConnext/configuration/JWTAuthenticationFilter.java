@@ -37,7 +37,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.replace("Bearer ", "");
 
-                log.info("Token: {}", token);
 
                 if (jwtUtils.validateToken(token)) {
                     String userId = jwtUtils.extractUserId(token);
@@ -63,7 +62,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                     // Gán vào SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                    log.info("Authenticated user: {}, roles: {}, doctorId: {}", userId, roles, doctorId);
                 }
             }
         } catch (Exception ex) {

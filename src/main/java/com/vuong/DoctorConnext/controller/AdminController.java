@@ -5,6 +5,7 @@ import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.request.doctor.DoctorUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
@@ -90,6 +91,13 @@ public class AdminController {
     public ResponseEntity<DepartmentResponse> updateDepartment(@ModelAttribute DepartmentUpdateRequest request) {
         DepartmentResponse updateDepartment = departmentService.updateDepartment(request);
         return ResponseEntity.ok(updateDepartment);
+    }
+
+    @PostMapping("/update-doctor")
+    public ResponseEntity<DoctorResponse> updateDoctor(@ModelAttribute DoctorUpdateRequest request) {
+        DoctorResponse updateDoctor = doctorService.updateDoctor(request);
+
+        return ResponseEntity.ok(updateDoctor);
     }
 
     @DeleteMapping("/delete-department/{departmentId}")

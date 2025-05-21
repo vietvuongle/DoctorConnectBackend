@@ -5,6 +5,9 @@ import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AppointmentMapper {
@@ -17,5 +20,9 @@ public interface AppointmentMapper {
     Appointment toAppointmentMapper(AppointmentCreationRequest request);
 
     AppointmentResponse toAppointmentResponse(Appointment appointment);
+
+
+    List<AppointmentResponse> toAppointmentResponseList(List<Appointment> appointments);
+
 
 }

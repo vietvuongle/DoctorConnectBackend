@@ -3,13 +3,17 @@ package com.vuong.DoctorConnext.service;
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
+import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.exception.ErrorCode;
+import com.vuong.DoctorConnext.mapper.AppointmentMapper;
 import com.vuong.DoctorConnext.mapper.UserMapper;
 import com.vuong.DoctorConnext.mapper.UserRegisMapper;
+import com.vuong.DoctorConnext.repository.AppointmentRepository;
 import com.vuong.DoctorConnext.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Builder
@@ -34,6 +39,10 @@ public class UserService {
     UserRepository userRepository;
     UserRegisMapper userRegisMapper;
     UserMapper userMapper;
+
+    AppointmentRepository appointmentRepository;
+    AppointmentMapper appointmentMapper;
+
     CloudinaryService cloudinaryService;
 
     PasswordEncoder passwordEncoder;
@@ -90,6 +99,16 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
+    public  UserResponse getUserByUserId(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+        UserResponse response = userMapper.toUserResponse(user);
+        response.set_id(user.get_id());
+
+        return response;
+    }
+
     public UserResponse getUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -109,7 +128,24 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return userMapper.toUserResponse(user);
+        UserResponse userResponse = userMapper.toUserResponse(user);
+        userResponse.set_id(user.get_id());
+
+        return userResponse;
+    }
+
+    public List<AppointmentResponse> getAppointmentsByUserId() {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
+
+        // Lấy danh sách lịch hẹn theo bác sĩ
+        List<Appointment> appointments = appointmentRepository.findByUserId(userId);
+
+        // Nếu không có lịch hẹn
+        if (appointments.isEmpty()) {
+            throw new RuntimeException("No appointments found for this doctor");
+        }
+
+        return appointmentMapper.toAppointmentResponseList(appointments);
     }
 
 

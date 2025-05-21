@@ -93,9 +93,20 @@ public class AuthenticationService {
                 .build();
     }
 
+    public User loadOrCreateUserFromOAuth2(String email, String name) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setName(name);
+                    user.setPassword(""); // Có thể bỏ qua password vì Google đã xác thực
+                    user.setRoles(Set.of("USER")); // Gán quyền mặc định
+                    return userRepository.save(user);
+                });
+    }
 
 
-    private String generateTokenUser(User user) {
+    public String generateTokenUser(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
