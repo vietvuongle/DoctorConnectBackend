@@ -205,11 +205,5 @@ public class AuthenticationService {
         return roles.toArray(new String[0]);
     }
 
-    private String buildScopeDoctor(Doctor doctor) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
-        if (!CollectionUtils.isEmpty(doctor.getRoles()))
-            doctor.getRoles().forEach(stringJoiner::add);
 
-        return stringJoiner.toString();
-    }
 }
