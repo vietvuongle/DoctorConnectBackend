@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.response;
+package com.vuong.DoctorConnext.dto.response.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,5 +14,10 @@ public class UserResponse {
     String _id;
     String name;
     String email;
+    String image;
+    String address;
+    String gender;
+    String dob;
+    String phone;
     Set<String> roles;
 }

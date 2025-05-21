@@ -1,21 +1,20 @@
-package com.vuong.DoctorConnext.dto.request;
+package com.vuong.DoctorConnext.dto.response.doctor;
 
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorCreationRequest {
+public class DoctorResponse {
+    String id;
     String name;
     String email;
-    @Size(min = 8, message = "INVALID_PASSWORD")
-    String password;
-    MultipartFile image;
+    String image;
     String experience;
     String fees;
     String speciality;
@@ -24,4 +23,6 @@ public class DoctorCreationRequest {
     String sex;
     String phone;
     String address;
+    String school;
+    Set<String> roles;
 }

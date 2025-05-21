@@ -1,29 +1,20 @@
-package com.vuong.DoctorConnext.entity;
+package com.vuong.DoctorConnext.dto.request.doctor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
-
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Doctor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class DoctorUpdateRequest {
     String id;
-
     String name;
     String email;
-    String password;
-    String image;
+    MultipartFile image;
     String experience;
     String fees;
     String speciality;
@@ -33,5 +24,4 @@ public class Doctor {
     String phone;
     String address;
     String school;
-    Set<String> roles;
 }

@@ -7,31 +7,26 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Doctor {
+public class MedicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String name;
-    String email;
-    String password;
-    String image;
-    String experience;
-    String fees;
-    String speciality;
-    String about;
-    String degree;
-    String sex;
-    String phone;
-    String address;
-    String school;
-    Set<String> roles;
+    String patientId;
+    String doctorId;
+
+    String symptoms;
+    String diagnosis;
+    String examination;
+    String treatment;
+    String notes;
+    String createdAt;
 }

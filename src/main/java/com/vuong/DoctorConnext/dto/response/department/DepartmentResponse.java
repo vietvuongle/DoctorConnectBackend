@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.response;
+package com.vuong.DoctorConnext.dto.response.department;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +12,6 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentResponse {
     String id;
-
     String name;
     String description;
     String iconImage;

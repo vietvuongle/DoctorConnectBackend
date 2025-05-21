@@ -7,31 +7,31 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Entity
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Doctor {
+public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    String _id;
 
-    String name;
+    String userId;
+    String doctorId;
+    String slotDate;
+    String slotTime;
+    String reason;
+    Long price;
+    String patientName;
     String email;
-    String password;
-    String image;
-    String experience;
-    String fees;
-    String speciality;
-    String about;
-    String degree;
-    String sex;
     String phone;
-    String address;
-    String school;
-    Set<String> roles;
+    String dob;
+    String gender;
+    boolean cancelled;
+    boolean payment;
+    boolean isConfirm;
+    boolean isCompleted;
+    String dateBooking;
 }
