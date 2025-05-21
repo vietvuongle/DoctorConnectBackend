@@ -14,10 +14,10 @@ public class UserResponse {
     String _id;
     String name;
     String email;
-    String phone;
+    String image;
+    String address;
     String gender;
     String dob;
-    String address;
-    String image;
+    String phone;
     Set<String> roles;
 }

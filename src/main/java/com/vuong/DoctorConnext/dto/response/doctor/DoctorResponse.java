@@ -26,3 +26,4 @@ public class DoctorResponse {
     String school;
     Set<String> roles;
 }
+

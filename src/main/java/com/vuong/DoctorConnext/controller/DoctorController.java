@@ -3,14 +3,24 @@ package com.vuong.DoctorConnext.controller;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
+import com.vuong.DoctorConnext.dto.response.user.UserResponse;
+import com.vuong.DoctorConnext.service.AppointmentService;
 import com.vuong.DoctorConnext.service.AuthenticationService;
 import com.vuong.DoctorConnext.service.DoctorService;
+import com.vuong.DoctorConnext.service.UserService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -22,6 +32,9 @@ public class DoctorController {
 
     AuthenticationService authenticationService;
     DoctorService doctorService;
+
+
+    UserService userService;
 
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticateDoctor(@RequestBody AuthenticationRequest request) {
@@ -39,6 +52,16 @@ public class DoctorController {
         return apiResponse;
     }
 
+
+    @GetMapping("/getUser/{userId}")
+    public ApiResponse<UserResponse> getUserByUserId(@PathVariable("userId") String userId) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.getUserByUserId(userId));
+
+        return apiResponse;
+    }
+
+
     @GetMapping("/getDoctor")
     public ApiResponse<DoctorResponse> getDoctorById(){
         ApiResponse<DoctorResponse> apiResponse = new ApiResponse<>();
@@ -48,4 +71,31 @@ public class DoctorController {
     }
 
 
+    @GetMapping("/appointments")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
+        List<AppointmentResponse> appointments = doctorService.getAppointmentsByDoctorId();
+        return ResponseEntity.ok(appointments);
+    }
+
+
+
+    @PutMapping("/appointment/confirm/{id}")
+    public ResponseEntity<AppointmentResponse> confirmAppointment(@PathVariable String id) {
+        AppointmentResponse response = doctorService.confirmAppointment(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/appointment/cancel/{id}")
+    public ResponseEntity<AppointmentResponse> cancelAppointment(@PathVariable String id) {
+        AppointmentResponse response = doctorService.cancelAppointment(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/appointment/completed/{id}")
+    public ResponseEntity<AppointmentResponse> completeAppointment(@PathVariable String id) {
+        AppointmentResponse response = doctorService.completeAppointment(id);
+        return ResponseEntity.ok(response);
+    }
+
 }
+

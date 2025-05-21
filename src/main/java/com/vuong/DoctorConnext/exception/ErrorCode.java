@@ -19,12 +19,10 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(1010, "Can not delete", HttpStatus.BAD_REQUEST),
     INVALID_NAME(1011, "Tên người dùng không được để trống", HttpStatus.BAD_REQUEST),
     INVALID_NAME1(1012, "Tên người dùng phải từ 3 đến 20 ký tự", HttpStatus.BAD_REQUEST),
+
     INVALID_NAME2(1013, "Tên người dùng chỉ được chứa chữ cái và số", HttpStatus.BAD_REQUEST),
     INVALID_CREDENTIALS(1014,"Xác thực không thành công",HttpStatus.BAD_REQUEST),
     PASSWORD_CHANGE_FAILED(1015, "Không thể thay đổi mật khẩu", HttpStatus.BAD_REQUEST)
-
-
-
     ;
 
     private int code;

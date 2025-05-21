@@ -7,31 +7,24 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Doctor {
+public class Prescription {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String name;
-    String email;
-    String password;
-    String image;
-    String experience;
-    String fees;
-    String speciality;
-    String about;
-    String degree;
-    String sex;
-    String phone;
-    String address;
-    String school;
-    Set<String> roles;
+    String medicalRecordId;  // chỉ lưu id của MedicalRecord
+
+    String medicineName;     // hoặc medicineId nếu bạn có bảng Medicine riêng
+    String dosage;
+    String frequency;
+    String duration;
 }

@@ -1,6 +1,5 @@
 package com.vuong.DoctorConnext.configuration;
 
-
 import com.vuong.DoctorConnext.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -34,20 +37,31 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.replace("Bearer ", "");
 
+
                 if (jwtUtils.validateToken(token)) {
                     String userId = jwtUtils.extractUserId(token);
+                    String doctorId = jwtUtils.extractDoctorId(token); // Lấy doctorId từ token
+                    List<String> roles = jwtUtils.extractRoles(token); // Lấy danh sách role từ token
 
-                    // Tạo Authentication object (chứa userId)
+                    // Chuyển đổi role (String) -> GrantedAuthority
+                    List<GrantedAuthority> authorities = roles.stream()
+                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                            .collect(Collectors.toList());
+
+                    // Tạo Authentication object
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(
-                                    userId, // principal
-                                    null,   // credentials
-                                    Collections.emptyList() // authorities
+                                    userId,
+                                    null,
+                                    authorities
                             );
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    // Set vào SecurityContext
+                    // Lưu doctorId vào 'details' của Authentication
+                    authenticationToken.setDetails(doctorId);  // Lưu doctorId vào details
+
+                    // Gán vào SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
                 }
             }
         } catch (Exception ex) {

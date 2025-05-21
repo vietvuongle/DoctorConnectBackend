@@ -2,8 +2,16 @@ server:
   port: 8081
   servlet:
     context-path: /
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 2MB
 
 spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
+
   datasource:
     url: "jdbc:mysql://localhost:3306/DoctorConnect"
     username: root
@@ -12,6 +20,30 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 180129695892-g5shabf1spmrao596p3g7c4t1e58pdge.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8081/login/oauth2/code/google
+            scope: openid, profile, email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+
+momo:
+  partner-code: MOMOLRJZ20181206
+  return-url: http://localhost:5175/my-appointments
+  end-point: https://test-payment.momo.vn/v2/gateway/api
+  ipn-url: https://bd96-42-113-95-135.ngrok-free.app/api/momo/ipn-handler
+  access-key: mTCKt9W3eU1m39TW
+  secret-key: SetA5RDnLHvt51AULf51DyauxUo3kDU6
+  request-type: captureWallet
+
 
   mail:
     host: smtp.gmail.com

@@ -14,4 +14,6 @@ public class DepartmentUpdateRequest {
     String name;
     String description;
     MultipartFile iconImage;
+
 }
+

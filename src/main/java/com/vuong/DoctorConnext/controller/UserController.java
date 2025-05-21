@@ -2,12 +2,16 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
-import com.vuong.DoctorConnext.dto.request.password.PasswordChangeRequest;
+
+import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
+import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
-import com.vuong.DoctorConnext.exception.AppException;
+import com.vuong.DoctorConnext.service.AppointmentService;
+
 import com.vuong.DoctorConnext.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,12 +39,29 @@ public class UserController {
 
     UserService userService;
 
+    AppointmentService appointmentService;
+
     @PostMapping("/register")
     ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
         ApiResponse<User> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.createUser(request));
 
         return apiResponse;
+    }
+
+
+    @PostMapping("/appointment")
+    ApiResponse<Appointment> createAppointment(@ModelAttribute AppointmentCreationRequest request) {
+        ApiResponse<Appointment> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(appointmentService.createAppointment(request));
+
+        return  apiResponse;
+    }
+
+    @GetMapping("/appointments")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
+        List<AppointmentResponse> appointments = userService.getAppointmentsByUserId();
+        return ResponseEntity.ok(appointments);
     }
 
     @PostMapping("/uploadImage")
@@ -52,11 +74,12 @@ public class UserController {
         }
     }
 
-    @PutMapping("/get-profile")
+    @PutMapping("/update-profile")
     public ResponseEntity<UserResponse> updateUser(@ModelAttribute UserUpdateRequest request) {
         UserResponse updatedUser = userService.updateUser(request);
         return ResponseEntity.ok(updatedUser);
     }
+
 
     @GetMapping("/profile")
     public ApiResponse<UserResponse> getUser() {

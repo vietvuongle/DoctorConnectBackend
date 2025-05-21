@@ -10,11 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorCreationRequest {
+public class DoctorUpdateRequest {
+    String id;
     String name;
     String email;
-    @Size(min = 8, message = "INVALID_PASSWORD")
-    String password;
     MultipartFile image;
     String experience;
     String fees;

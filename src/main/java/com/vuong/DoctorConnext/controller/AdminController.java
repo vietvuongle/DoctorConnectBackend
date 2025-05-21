@@ -5,17 +5,16 @@ import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
+import com.vuong.DoctorConnext.dto.request.doctor.DoctorUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.department.DepartmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.entity.Doctor;
-import com.vuong.DoctorConnext.service.AuthenticationService;
-import com.vuong.DoctorConnext.service.DepartmentService;
-import com.vuong.DoctorConnext.service.DoctorService;
-import com.vuong.DoctorConnext.service.UserService;
+import com.vuong.DoctorConnext.service.*;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +36,7 @@ public class AdminController {
     @Autowired
     DoctorService doctorService;
     DepartmentService departmentService;
+    AppointmentService appointmentService;
 
     AuthenticationService authenticationService;
 
@@ -79,10 +79,25 @@ public class AdminController {
                 .build();
     }
 
+
+    @GetMapping("/all-appointment")
+    ApiResponse<List<AppointmentResponse>> getAppointments() {
+        return ApiResponse.<List<AppointmentResponse>>builder()
+                .result(appointmentService.getAppointments())
+                .build();
+    }
+
     @PostMapping("/update-department")
     public ResponseEntity<DepartmentResponse> updateDepartment(@ModelAttribute DepartmentUpdateRequest request) {
         DepartmentResponse updateDepartment = departmentService.updateDepartment(request);
         return ResponseEntity.ok(updateDepartment);
+    }
+
+    @PostMapping("/update-doctor")
+    public ResponseEntity<DoctorResponse> updateDoctor(@ModelAttribute DoctorUpdateRequest request) {
+        DoctorResponse updateDoctor = doctorService.updateDoctor(request);
+
+        return ResponseEntity.ok(updateDoctor);
     }
 
     @DeleteMapping("/delete-department/{departmentId}")
