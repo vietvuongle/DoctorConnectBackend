@@ -2,20 +2,24 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
+import com.vuong.DoctorConnext.dto.request.password.PasswordChangeRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
+import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.service.AppointmentService;
 import com.vuong.DoctorConnext.service.AuthenticationService;
 import com.vuong.DoctorConnext.service.DoctorService;
 import com.vuong.DoctorConnext.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,6 +99,16 @@ public class DoctorController {
     public ResponseEntity<AppointmentResponse> completeAppointment(@PathVariable String id) {
         AppointmentResponse response = doctorService.completeAppointment(id);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/change-password")
+    public ApiResponse<String> changePassword(@RequestBody @Valid PasswordChangeRequest request) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        doctorService.changePassword(request.getCurrentPassword(), request.getNewPassword());
+        apiResponse.setResult("Password updated successfully");
+
+        return apiResponse;
+
     }
 
 }

@@ -21,7 +21,7 @@ public enum ErrorCode {
     INVALID_NAME1(1012, "Tên người dùng phải từ 3 đến 20 ký tự", HttpStatus.BAD_REQUEST),
 
     INVALID_NAME2(1013, "Tên người dùng chỉ được chứa chữ cái và số", HttpStatus.BAD_REQUEST),
-    INVALID_CREDENTIALS(1014,"Xác thực không thành công",HttpStatus.BAD_REQUEST),
+    INVALID_CREDENTIALS(1014,"Mật khẩu cũ không chính xác",HttpStatus.BAD_REQUEST),
     PASSWORD_CHANGE_FAILED(1015, "Không thể thay đổi mật khẩu", HttpStatus.BAD_REQUEST)
     ;
 

@@ -26,6 +26,8 @@ public class AppointmentCreationRequest {
     boolean cancelled;
     boolean payment;
     boolean isCompleted;
+    boolean isReview;
+
     String dateBooking;
 
 }

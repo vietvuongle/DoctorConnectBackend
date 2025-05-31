@@ -6,7 +6,6 @@ import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -19,6 +18,7 @@ public interface AppointmentMapper {
     @Mapping(target = "payment", ignore = true)
     @Mapping(target = "isCompleted", ignore = true)
     @Mapping(target = "isConfirm", ignore = true)
+    @Mapping(target = "isReview", ignore = true)
     Appointment toAppointmentMapper(AppointmentCreationRequest request);
 
     AppointmentResponse toAppointmentResponse(Appointment appointment);
