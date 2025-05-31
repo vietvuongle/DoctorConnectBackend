@@ -25,6 +25,7 @@ public class AppointmentResponse {
     boolean cancelled;
     boolean payment;
     boolean completed;
+    boolean review;
     String dateBooking;
 }
 

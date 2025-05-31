@@ -5,6 +5,7 @@ import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 import com.vuong.DoctorConnext.entity.User;
@@ -28,6 +29,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -79,6 +81,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public List<UserResponse> getAllUser() {
+        List<User> userList = userRepository.findAll();
+
+        List<UserResponse> userResponseList = new ArrayList<>();
+
+        for (User user : userList) {
+            UserResponse response = new UserResponse();
+            response.set_id(user.get_id());             // Tự set id
+            response.setName(user.getName());         // Set các trường khác tùy bạn
+            response.setEmail(user.getEmail());
+
+            userResponseList.add(response);
+        }
+
+        return userResponseList;
+    }
+
 
     public UserResponse updateUser(UserUpdateRequest request) {
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -120,13 +139,15 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-
-
     public UserResponse getUser() {
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return userMapper.toUserResponse(user);
+
+        UserResponse userResponse = userMapper.toUserResponse(user);
+        userResponse.set_id(user.get_id());
+
+        return userResponse;
     }
 
     public void changePassword(String currentPassword, String newPassword) {
@@ -152,7 +173,7 @@ public class UserService {
     }
 
 
-    public  UserResponse getUserByUserId(String userId) {
+    public UserResponse getUserByUserId(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
@@ -167,6 +188,19 @@ public class UserService {
 
         // Lấy danh sách lịch hẹn theo bác sĩ
         List<Appointment> appointments = appointmentRepository.findByUserId(userId);
+
+        // Nếu không có lịch hẹn
+        if (appointments.isEmpty()) {
+            throw new RuntimeException("No appointments found for this doctor");
+        }
+
+        return appointmentMapper.toAppointmentResponseList(appointments);
+    }
+
+    public List<AppointmentResponse> getAppointmentsByDoctorId(String doctorId) {
+
+        // Lấy danh sách lịch hẹn theo bác sĩ
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
 
         // Nếu không có lịch hẹn
         if (appointments.isEmpty()) {

@@ -8,32 +8,19 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Appointment {
+public class DoctorReview {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String _id;
+    String id;
 
     String userId;
     String doctorId;
-    String slotDate;
-    String slotTime;
-    String reason;
-    Long price;
-    String patientName;
-    String email;
-    String phone;
-    String dob;
-    String gender;
-    boolean cancelled;
-    boolean payment;
-    boolean isConfirm;
-    boolean isCompleted;
-    boolean isReview;
-    String dateBooking;
+    int rating;
+    String comment;
+    String createAt;
 }
-

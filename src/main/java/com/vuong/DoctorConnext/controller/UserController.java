@@ -4,16 +4,22 @@ import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 
 import com.vuong.DoctorConnext.dto.request.appointment.AppointmentCreationRequest;
+import com.vuong.DoctorConnext.dto.request.doctorReview.DoctorReviewCreationRequest;
 import com.vuong.DoctorConnext.dto.request.password.PasswordChangeRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserCreationRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
+import com.vuong.DoctorConnext.dto.response.DoctorReviewResponse.DoctorReviewResponse;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
+import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
+import com.vuong.DoctorConnext.entity.DoctorReview;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.service.AppointmentService;
 
+import com.vuong.DoctorConnext.service.DoctorReviewService;
+import com.vuong.DoctorConnext.service.DoctorService;
 import com.vuong.DoctorConnext.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -43,6 +49,8 @@ public class UserController {
 
     AppointmentService appointmentService;
 
+    DoctorReviewService doctorReviewService;
+
     @PostMapping("/register")
     ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
         ApiResponse<User> apiResponse = new ApiResponse<>();
@@ -60,9 +68,16 @@ public class UserController {
         return  apiResponse;
     }
 
+
     @GetMapping("/appointments")
-    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByUser() {
         List<AppointmentResponse> appointments = userService.getAppointmentsByUserId();
+        return ResponseEntity.ok(appointments);
+    }
+
+    @GetMapping("/appointments/{doctorId}")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctorId(@PathVariable String doctorId) {
+        List<AppointmentResponse> appointments = userService.getAppointmentsByDoctorId(doctorId);
         return ResponseEntity.ok(appointments);
     }
 
@@ -107,6 +122,28 @@ public class UserController {
         }
     }
 
+    @PostMapping("/review")
+    public ApiResponse<DoctorReview> createDoctorReview(@RequestBody @Valid DoctorReviewCreationRequest request) {
+        ApiResponse<DoctorReview> apiResponse = ApiResponse.<DoctorReview>builder()
+                .code(1000)
+                .result(doctorReviewService.createDoctorReview(request))
+                .build();
 
+        return apiResponse;
+    }
+
+    @GetMapping("/review/{doctorId}")
+    public ResponseEntity<List<DoctorReviewResponse>> getAllDoctorReviewByDoctorId(@PathVariable("doctorId") String doctorId) {
+        List<DoctorReviewResponse> apiResponse = doctorReviewService.getAllDoctorReviewByDoctorId(doctorId);
+
+        return  ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/all-user")
+    ApiResponse<List<UserResponse>> getAllUser() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUser())
+                .build();
+    }
 
 }

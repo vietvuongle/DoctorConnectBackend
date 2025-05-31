@@ -9,6 +9,7 @@ import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.entity.Appointment;
 
 import com.vuong.DoctorConnext.entity.Doctor;
+import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.enums.Role;
 import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.exception.ErrorCode;
@@ -144,6 +145,29 @@ public class DoctorService {
         }
 
         return doctorMapper.toDoctorResponse(doctorRepository.save(doctor));
+    }
+
+    public void changePassword(String currentPassword, String newPassword) {
+        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
+
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!passwordEncoder.matches(currentPassword, doctor.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS); // Mật khẩu cũ không chính xác
+        }
+
+        // Kiểm tra độ dài của mật khẩu mới (nếu có yêu cầu)
+        if (newPassword.length() < 8) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // Cập nhật mật khẩu mới
+        doctor.setPassword(passwordEncoder.encode(newPassword));
+
+        // Lưu thông tin người dùng sau khi thay đổi mật khẩu
+        doctorRepository.save(doctor);
     }
 }
 
