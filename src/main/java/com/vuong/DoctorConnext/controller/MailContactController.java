@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "http://localhost:5175")
-//@CrossOrigin(origins = "*") // Cho phép gọi từ frontend React
 public class MailContactController {
 
-    private MailContactService contactService;
+    private final MailContactService contactService;
 
     @PostMapping
     public ResponseEntity<String> sendContact(@RequestBody MailContactRequest request) {
