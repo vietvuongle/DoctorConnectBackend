@@ -1,4 +1,4 @@
-package com.vuong.DoctorConnext.dto.request.department;
+package com.vuong.DoctorConnext.dto.request.clinic;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,12 +9,11 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DepartmentUpdateRequest {
+public class ClinicUpdateRequest {
     String id;
     String name;
+    String email;
+    String address;
+    MultipartFile image;
     String description;
-    String about;
-    MultipartFile iconImage;
-
 }
-

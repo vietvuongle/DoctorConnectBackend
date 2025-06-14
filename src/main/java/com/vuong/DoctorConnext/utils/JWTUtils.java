@@ -31,6 +31,15 @@ public class JWTUtils {
         }
     }
 
+    public String extractClinicId(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            return signedJWT.getJWTClaimsSet().getStringClaim("clinicId");
+        } catch (ParseException e) {
+            throw new RuntimeException("Cannot extract clinicId from token", e);
+        }
+    }
+
 
     public boolean validateToken(String token) {
         try {

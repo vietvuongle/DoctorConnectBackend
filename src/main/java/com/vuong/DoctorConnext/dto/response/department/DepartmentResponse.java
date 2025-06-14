@@ -16,5 +16,6 @@ public class DepartmentResponse {
     String name;
     String description;
     String iconImage;
+    String about;
     Set<String> roles;
 }

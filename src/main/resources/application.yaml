@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: xuanlinhdev.2208@gmail.com
-    password: nwdyiqlgkrjqlhfq
+    username: vietvuongf@gmail.com
+    password: iawfuweyatnsdbnh
     protocol: smtp
     properties:
       mail:
@@ -24,7 +24,7 @@ spring:
           auth: true
           starttls:
             enable: true
-            required: true
+#            required: true
 
   datasource:
     url: "jdbc:mysql://localhost:3307/DoctorConnect"
@@ -53,7 +53,7 @@ momo:
   partner-code: MOMOLRJZ20181206
   return-url: http://localhost:5175/my-appointments
   end-point: https://test-payment.momo.vn/v2/gateway/api
-  ipn-url: https://bd96-42-113-95-135.ngrok-free.app/api/momo/ipn-handler
+  ipn-url: https://4b1a-2402-9d80-40b-e9e1-1de3-462d-24ab-fc67.ngrok-free.app/api/momo/ipn-handler
   access-key: mTCKt9W3eU1m39TW
   secret-key: SetA5RDnLHvt51AULf51DyauxUo3kDU6
   request-type: captureWallet

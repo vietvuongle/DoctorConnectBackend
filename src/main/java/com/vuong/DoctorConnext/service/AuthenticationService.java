@@ -5,10 +5,12 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
+import com.vuong.DoctorConnext.entity.Clinic;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.entity.User;
 import com.vuong.DoctorConnext.exception.AppException;
 import com.vuong.DoctorConnext.exception.ErrorCode;
+import com.vuong.DoctorConnext.repository.ClinicRepository;
 import com.vuong.DoctorConnext.repository.DoctorRepository;
 import com.vuong.DoctorConnext.repository.UserRepository;
 import lombok.AccessLevel;
@@ -33,6 +35,7 @@ import java.util.*;
 public class AuthenticationService {
     UserRepository userRepository;
     DoctorRepository doctorRepository;
+    ClinicRepository clinicRepository;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -71,6 +74,25 @@ public class AuthenticationService {
         }
 
         var token = generateTokenDoctor(doctor);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+    }
+
+    public AuthenticationResponse authenticateClinic(AuthenticationRequest request){
+        Clinic clinic = clinicRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        boolean authenticated =  passwordEncoder.matches(request.getPassword(), clinic.getPassword());
+
+        if (!authenticated) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        var token = generateTokenClinic(clinic);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -162,6 +184,33 @@ public class AuthenticationService {
         }
     }
 
+    private String generateTokenClinic(Clinic clinic) {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(clinic.getName())
+                .issuer("vuong.com")
+                .issueTime(new Date())
+                .expirationTime(new Date(
+                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                ))
+                .claim("scope", buildScopeClinic())
+                .claim("clinicId", clinic.getId())
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+
+        JWSObject jwsObject = new JWSObject(header, payload);
+
+        try {
+            jwsObject.sign(new MACSigner(signerKey.getBytes()));
+            return  jwsObject.serialize();
+        } catch (JOSEException e) {
+            log.error("Cannot create token");
+            throw new RuntimeException(e);
+        }
+    }
+
     private String generateToken() {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
@@ -201,6 +250,13 @@ public class AuthenticationService {
         List<String> roles = new ArrayList<>();
         if (!CollectionUtils.isEmpty(doctor.getRoles()))
             roles.addAll(doctor.getRoles());
+
+        return roles.toArray(new String[0]);
+    }
+
+    private String[] buildScopeClinic() {
+        List<String> roles = new ArrayList<>();
+            roles.add("CLINIC");
 
         return roles.toArray(new String[0]);
     }

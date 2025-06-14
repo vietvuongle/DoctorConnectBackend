@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class DepartmentCreationRequest {
     String name;
     String description;
+    String about;
     MultipartFile iconImage;
 
 }

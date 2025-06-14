@@ -1,5 +1,6 @@
 package com.vuong.DoctorConnext.service;
 
+import com.vuong.DoctorConnext.client.CustomUserDetails;
 import com.vuong.DoctorConnext.configuration.CloudinaryService;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
 
@@ -73,6 +74,8 @@ public class DoctorService {
     }
 
 
+
+
     public DoctorResponse getDoctorById(String doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -80,7 +83,8 @@ public class DoctorService {
     }
 
     public DoctorResponse getDoctorById() {
-        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails();  // Lấy doctorId từ details
+        CustomUserDetails details = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String doctorId = details.getDoctorId();
 
         // Tìm người dùng theo userId
         Doctor doctor = doctorRepository.findById(doctorId)
@@ -91,7 +95,8 @@ public class DoctorService {
 
 
     public List<AppointmentResponse> getAppointmentsByDoctorId() {
-        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
+        CustomUserDetails details = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String doctorId = details.getDoctorId();
 
         // Lấy danh sách lịch hẹn theo bác sĩ
         List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
@@ -148,7 +153,8 @@ public class DoctorService {
     }
 
     public void changePassword(String currentPassword, String newPassword) {
-        String doctorId = (String) SecurityContextHolder.getContext().getAuthentication().getDetails(); // Hoặc getPrincipal nếu bạn lưu ID trong đó
+        CustomUserDetails details = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String doctorId = details.getDoctorId();
 
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

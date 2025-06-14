@@ -1,9 +1,7 @@
 package com.vuong.DoctorConnext.dto.request.mailcontact;
 
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder

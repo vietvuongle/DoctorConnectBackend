@@ -2,6 +2,8 @@ package com.vuong.DoctorConnext.controller;
 
 import com.vuong.DoctorConnext.dto.request.ApiResponse;
 import com.vuong.DoctorConnext.dto.request.AuthenticationRequest;
+import com.vuong.DoctorConnext.dto.request.clinic.ClinicCreationRequest;
+import com.vuong.DoctorConnext.dto.request.clinic.ClinicUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentCreationRequest;
 import com.vuong.DoctorConnext.dto.request.department.DepartmentUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.doctor.DoctorCreationRequest;
@@ -9,9 +11,11 @@ import com.vuong.DoctorConnext.dto.request.doctor.DoctorUpdateRequest;
 import com.vuong.DoctorConnext.dto.request.user.UserUpdateRequest;
 import com.vuong.DoctorConnext.dto.response.AuthenticationResponse;
 import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
+import com.vuong.DoctorConnext.dto.response.clinic.ClinicResponse;
 import com.vuong.DoctorConnext.dto.response.department.DepartmentResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.dto.response.user.UserResponse;
+import com.vuong.DoctorConnext.entity.Clinic;
 import com.vuong.DoctorConnext.entity.Department;
 import com.vuong.DoctorConnext.entity.Doctor;
 import com.vuong.DoctorConnext.service.*;
@@ -37,6 +41,7 @@ public class AdminController {
     DoctorService doctorService;
     DepartmentService departmentService;
     AppointmentService appointmentService;
+    ClinicService clinicService;
 
     AuthenticationService authenticationService;
 
@@ -55,6 +60,14 @@ public class AdminController {
         apiResponse.setResult(departmentService.createDepartment(request));
 
         return  apiResponse;
+    }
+
+    @PostMapping("/add-clinic")
+    ApiResponse<Clinic> addClinic(@ModelAttribute @Valid ClinicCreationRequest request) {
+        ApiResponse<Clinic> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(clinicService.createClinic(request));
+
+        return apiResponse;
     }
 
     @PostMapping("/login")
@@ -87,6 +100,13 @@ public class AdminController {
                 .build();
     }
 
+    @GetMapping("/all-clinic")
+    ApiResponse<List<ClinicResponse>> getClinics() {
+        return ApiResponse.<List<ClinicResponse>>builder()
+                .result(clinicService.getClinics())
+                .build();
+    }
+
     @PostMapping("/update-department")
     public ResponseEntity<DepartmentResponse> updateDepartment(@ModelAttribute DepartmentUpdateRequest request) {
         DepartmentResponse updateDepartment = departmentService.updateDepartment(request);
@@ -98,6 +118,13 @@ public class AdminController {
         DoctorResponse updateDoctor = doctorService.updateDoctor(request);
 
         return ResponseEntity.ok(updateDoctor);
+    }
+
+    @PostMapping("/update-clinic")
+    public ResponseEntity<ClinicResponse> updateClinic(@ModelAttribute ClinicUpdateRequest request) {
+        ClinicResponse updateClinic = clinicService.updateClinic(request);
+
+        return ResponseEntity.ok(updateClinic);
     }
 
     @DeleteMapping("/delete-department/{departmentId}")

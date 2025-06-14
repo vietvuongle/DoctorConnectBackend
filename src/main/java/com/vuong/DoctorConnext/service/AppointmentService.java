@@ -33,6 +33,9 @@ public class AppointmentService {
     AppointmentRepository appointmentRepository;
     AppointmentMapper appointmentMapper;
 
+    MailContactService emailService;
+
+
 
     public Appointment createAppointment(AppointmentCreationRequest request) {
 
@@ -45,6 +48,16 @@ public class AppointmentService {
 
         appointment.setDateBooking(today);
 
+        String subject = "Lịch khám của bạn đã được tạo";
+        String content = String.format(
+                "Chào %s,\n\nLịch khám của bạn đã được tạo thành công.\n\nVào: %s ngày: %s\n\nDoctorConnect trân trọng cảm ơn.",
+                appointment.getPatientName(),
+                appointment.getSlotTime(),
+                appointment.getSlotDate()
+        );
+
+        emailService.sendMedicalRecordEmail(appointment.getEmail(), subject, content);
+
         return appointmentRepository.save(appointment);
     }
 
@@ -52,5 +65,7 @@ public class AppointmentService {
     public List<AppointmentResponse> getAppointments() {
         return appointmentRepository.findAll().stream().map(appointmentMapper::toAppointmentResponse).toList();
     }
+
+
 }
 

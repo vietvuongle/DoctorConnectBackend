@@ -18,6 +18,7 @@ public class DoctorCreationRequest {
     MultipartFile image;
     String experience;
     String fees;
+    String clinicId;
     String speciality;
     String about;
     String degree;

@@ -1,10 +1,9 @@
 package com.vuong.DoctorConnext.entity;
 
+import com.vuong.DoctorConnext.enums.ClinicStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Data
@@ -12,26 +11,19 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Doctor {
+public class Clinic {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-
     String name;
     String email;
     String password;
-    String clinicId;
     String image;
-    String experience;
-    String fees;
-    String speciality;
+    String address;
     @Lob
     @Column(columnDefinition = "TEXT")
-    String about;
-    String degree;
-    String sex;
-    String phone;
-    String address;
-    String school;
-    Set<String> roles;
+    String description;
+
+    @Enumerated(EnumType.STRING)
+    ClinicStatus status;
 }

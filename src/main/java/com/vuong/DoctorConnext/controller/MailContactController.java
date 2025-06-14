@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 //@CrossOrigin(origins = "*") // Cho phép gọi từ frontend React
 public class MailContactController {
 
-    private MailContactService contactService;
+    private final MailContactService contactService;
 
     @PostMapping
     public ResponseEntity<String> sendContact(@RequestBody MailContactRequest request) {
