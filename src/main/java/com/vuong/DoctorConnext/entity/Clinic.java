@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -20,6 +23,12 @@ public class Clinic {
     String password;
     String image;
     String address;
+
+    @ElementCollection
+    @CollectionTable(name = "clinic_images", joinColumns = @JoinColumn(name = "clinic_id"))
+    @Column(name = "image_url")
+    List<String> images = new ArrayList<>(); // Danh sách ảnh phụ
+
     @Lob
     @Column(columnDefinition = "TEXT")
     String description;

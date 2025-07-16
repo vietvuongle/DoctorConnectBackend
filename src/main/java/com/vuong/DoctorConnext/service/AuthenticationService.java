@@ -138,7 +138,7 @@ public class AuthenticationService {
                 .issuer("vuong.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(2, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .claim("scope", buildScopeUser(user))
                 .claim("userId", user.get_id())
@@ -165,7 +165,7 @@ public class AuthenticationService {
                 .issuer("vuong.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(2, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .claim("scope", buildScopeDoctor(doctor))
                 .claim("doctorId", doctor.getId())
@@ -192,7 +192,7 @@ public class AuthenticationService {
                 .issuer("vuong.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(2, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .claim("scope", buildScopeClinic())
                 .claim("clinicId", clinic.getId())
@@ -218,7 +218,7 @@ public class AuthenticationService {
                 .issuer("vuong.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(2, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .claim("scope", Arrays.asList("ADMIN", "USER", "DOCTOR"))
                 .build();

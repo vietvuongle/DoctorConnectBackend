@@ -46,6 +46,13 @@ public class ClinicController {
                 .build();
     }
 
+    @GetMapping("/all-doctor/{clinicId}")
+    ApiResponse<List<DoctorResponse>> getDoctor(@PathVariable String clinicId) {
+        return ApiResponse.<List<DoctorResponse>>builder()
+                .result(clinicService.getDoctorByClinicId(clinicId))
+                .build();
+    }
+
     @GetMapping("/appointments")
     public ApiResponse<List<AppointmentResponse>> getAppointmentsByClinic() {
         ApiResponse<List<AppointmentResponse>> apiResponse = new ApiResponse<>();

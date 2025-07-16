@@ -51,6 +51,8 @@ public class SecurityConfig {
             "/api/user/all-user",
             "/api/user/top-review",
             "/api/admin/all-clinic",
+            "/api/clinic/all-doctor/{clinicId}",
+
     };
 
 

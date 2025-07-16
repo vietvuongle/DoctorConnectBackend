@@ -92,6 +92,13 @@ public class ClinicService {
         return doctors.stream().map(doctorMapper::toDoctorResponse).toList();
     }
 
+    public List<DoctorResponse> getDoctorByClinicId(String clinicId) {
+
+        List<Doctor> doctors = doctorRepository.findByClinicId(clinicId);
+
+        return doctors.stream().map(doctorMapper::toDoctorResponse).toList();
+    }
+
     public ClinicResponse updateClinic(ClinicUpdateRequest request) {
         Clinic clinic = clinicRepository.findById(request.getId())
                 .orElseThrow(() -> new RuntimeException("Clinic not found"));

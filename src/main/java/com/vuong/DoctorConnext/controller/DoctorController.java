@@ -129,6 +129,7 @@ public class DoctorController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate slotDate) {
 
         List<DoctorSchedule> availableSchedules = scheduleService.getAvailableSlots(doctorId, slotDate);
+        log.info("data {} ", availableSchedules);
 
         ApiResponse<List<DoctorSchedule>> response = new ApiResponse<>();
         response.setResult(availableSchedules);

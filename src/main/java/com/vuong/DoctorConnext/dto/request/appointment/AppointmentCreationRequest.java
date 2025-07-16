@@ -21,6 +21,7 @@ public class AppointmentCreationRequest {
     String dob;
     String gender;
     String clinicId;
+    String slotId;
     boolean isConfirm;
 
     boolean cancelled;
