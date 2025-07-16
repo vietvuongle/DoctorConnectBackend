@@ -29,6 +29,7 @@ public class Appointment {
     String phone;
     String dob;
     String gender;
+    String clinicId;
     boolean cancelled;
     boolean payment;
     boolean isConfirm;

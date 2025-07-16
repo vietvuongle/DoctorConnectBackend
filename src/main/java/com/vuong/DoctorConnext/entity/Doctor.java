@@ -1,9 +1,6 @@
 package com.vuong.DoctorConnext.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,10 +20,13 @@ public class Doctor {
     String name;
     String email;
     String password;
+    String clinicId;
     String image;
     String experience;
     String fees;
     String speciality;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     String about;
     String degree;
     String sex;

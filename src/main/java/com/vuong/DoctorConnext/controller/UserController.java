@@ -139,6 +139,13 @@ public class UserController {
         return  ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/top-review")
+    public ApiResponse<List<DoctorReview>> getTop3Reviews() {
+        return ApiResponse.<List<DoctorReview>>builder()
+                .result(doctorReviewService.getTop3HighestRatedReviews())
+                .build();
+    }
+
     @GetMapping("/all-user")
     ApiResponse<List<UserResponse>> getAllUser() {
         return ApiResponse.<List<UserResponse>>builder()

@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MedicalRecordWithPrescriptionRequest {
+    String appointmentId;
     String patientId;
     String doctorId;
 

@@ -21,7 +21,7 @@ public class MailContactService {
 
     public void sendContactMail(MailContactRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("xuanlinhdev.2208@gmail.com"); // Email đích của bạn
+        message.setTo("vietvuongf@gmail.com"); // Email đích của bạn
         message.setSubject("Tin nhắn liên hệ từ: " + request.getName());
 
         String body = String.format(
@@ -33,6 +33,15 @@ public class MailContactService {
         );
 
         message.setText(body);
+        mailSender.send(message);
+    }
+
+    public void sendMedicalRecordEmail(String toEmail, String subject, String content) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("vietvuongf@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(content);
         mailSender.send(message);
     }
 }

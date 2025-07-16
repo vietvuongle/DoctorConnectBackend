@@ -65,4 +65,9 @@ public class DoctorReviewService {
 
         return doctorReviewMapper.toDoctorReviewResponseList(doctorReviews);
     }
+
+    //get top 3 review
+    public List<DoctorReview> getTop3HighestRatedReviews() {
+        return doctorReviewRepository.findTop3ByOrderByRatingDescCreateAtDesc();
+    }
 }

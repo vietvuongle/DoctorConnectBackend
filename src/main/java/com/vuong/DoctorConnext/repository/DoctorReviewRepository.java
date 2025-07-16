@@ -8,4 +8,7 @@ import java.util.List;
 public interface DoctorReviewRepository extends JpaRepository<DoctorReview, String> {
     List<DoctorReview> findByDoctorId(String doctorId);
 
+    List<DoctorReview> findTop3ByOrderByRatingDescCreateAtDesc();
+
+
 }

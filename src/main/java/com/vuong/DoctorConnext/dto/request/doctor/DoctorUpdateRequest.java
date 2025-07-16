@@ -19,6 +19,7 @@ public class DoctorUpdateRequest {
     String fees;
     String speciality;
     String about;
+    String clinicId;
     String degree;
     String sex;
     String phone;

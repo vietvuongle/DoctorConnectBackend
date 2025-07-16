@@ -17,6 +17,7 @@ public class DoctorResponse {
     String image;
     String experience;
     String fees;
+    String clinicId;
     String speciality;
     String about;
     String degree;

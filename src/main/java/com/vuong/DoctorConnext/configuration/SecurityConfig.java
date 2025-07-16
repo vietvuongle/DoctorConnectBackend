@@ -40,6 +40,7 @@ public class SecurityConfig {
             "/api/user/login",
             "/api/admin/login",
             "/api/doctor/login",
+            "/api/clinic/login",
             "/api/momo/ipn-handler"
 
     };
@@ -47,7 +48,11 @@ public class SecurityConfig {
     private final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/admin/all-doctor",
             "/api/admin/all-department",
-            "/api/user/all-user"
+            "/api/user/all-user",
+            "/api/user/top-review",
+            "/api/admin/all-clinic",
+            "/api/clinic/all-doctor/{clinicId}",
+
     };
 
 

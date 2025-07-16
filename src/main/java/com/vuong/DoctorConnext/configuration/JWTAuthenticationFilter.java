@@ -1,5 +1,6 @@
 package com.vuong.DoctorConnext.configuration;
 
+import com.vuong.DoctorConnext.client.CustomUserDetails;
 import com.vuong.DoctorConnext.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,6 +42,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtUtils.validateToken(token)) {
                     String userId = jwtUtils.extractUserId(token);
                     String doctorId = jwtUtils.extractDoctorId(token); // Lấy doctorId từ token
+                    String clinicId = jwtUtils.extractClinicId(token);
                     List<String> roles = jwtUtils.extractRoles(token); // Lấy danh sách role từ token
 
                     // Chuyển đổi role (String) -> GrantedAuthority
@@ -55,9 +57,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     null,
                                     authorities
                             );
+                    CustomUserDetails customDetails = new CustomUserDetails(doctorId, clinicId);
 
-                    // Lưu doctorId vào 'details' của Authentication
-                    authenticationToken.setDetails(doctorId);  // Lưu doctorId vào details
+                    // Lưu doctorId và clinicId vào 'details' của Authentication
+                    authenticationToken.setDetails(customDetails);  // Lưu doctorId vào details
 
                     // Gán vào SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);

@@ -6,8 +6,14 @@ import com.vuong.DoctorConnext.dto.response.appointment.AppointmentResponse;
 import com.vuong.DoctorConnext.dto.response.department.DepartmentResponse;
 
 import com.vuong.DoctorConnext.entity.Appointment;
+import com.vuong.DoctorConnext.entity.Clinic;
+import com.vuong.DoctorConnext.entity.Doctor;
+import com.vuong.DoctorConnext.entity.DoctorSchedule;
 import com.vuong.DoctorConnext.mapper.AppointmentMapper;
 import com.vuong.DoctorConnext.repository.AppointmentRepository;
+import com.vuong.DoctorConnext.repository.ClinicRepository;
+import com.vuong.DoctorConnext.repository.DoctorRepository;
+import com.vuong.DoctorConnext.repository.DoctorScheduleRepository;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +29,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Builder
@@ -33,17 +40,43 @@ public class AppointmentService {
     AppointmentRepository appointmentRepository;
     AppointmentMapper appointmentMapper;
 
+    ClinicRepository clinicRepository;
+
+    DoctorScheduleRepository doctorScheduleRepository;
+
+
+    MailContactService emailService;
+
+
 
     public Appointment createAppointment(AppointmentCreationRequest request) {
 
         Appointment appointment = appointmentMapper.toAppointmentMapper(request);
 
-        log.info("appointment {}", appointment);
+
+        Optional<Clinic> clinic = clinicRepository.findById(request.getClinicId());
+
+        DoctorSchedule doctorSchedule = doctorScheduleRepository.getById(request.getSlotId());
+
+        doctorSchedule.setBooked(true);
+
+        doctorScheduleRepository.save(doctorSchedule);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String today = LocalDate.now().format(formatter);
 
         appointment.setDateBooking(today);
+
+        String subject = "Lịch khám của bạn đã được tạo";
+        String content = String.format(
+                "Chào %s,\n\nLịch khám của bạn đã được tạo thành công.\n\nVào: %s ngày: %s\n\nTại: %s\n\nDoctorConnect trân trọng cảm ơn.",
+                appointment.getPatientName(),
+                appointment.getSlotTime(),
+                appointment.getSlotDate(),
+                clinic.get().getAddress()
+        );
+
+        emailService.sendMedicalRecordEmail(appointment.getEmail(), subject, content);
 
         return appointmentRepository.save(appointment);
     }
@@ -52,5 +85,7 @@ public class AppointmentService {
     public List<AppointmentResponse> getAppointments() {
         return appointmentRepository.findAll().stream().map(appointmentMapper::toAppointmentResponse).toList();
     }
+
+
 }
 

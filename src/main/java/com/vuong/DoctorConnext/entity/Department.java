@@ -1,9 +1,6 @@
 package com.vuong.DoctorConnext.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,6 +19,9 @@ public class Department {
 
     String name;
     String description;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    String about;
     String iconImage;
     Set<String> roles;
 }
