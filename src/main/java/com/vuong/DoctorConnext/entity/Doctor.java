@@ -22,7 +22,6 @@ public class Doctor {
     String password;
     String clinicId;
     String image;
-    String experience;
     String fees;
     String speciality;
     @Lob
@@ -32,6 +31,5 @@ public class Doctor {
     String sex;
     String phone;
     String address;
-    String school;
     Set<String> roles;
 }

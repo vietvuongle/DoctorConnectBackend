@@ -54,7 +54,7 @@ momo:
     partner-code: MOMOLRJZ20181206
     return-url: http://localhost:5175/my-appointments
     end-point: https://test-payment.momo.vn/v2/gateway/api
-    ipn-url: https://4b1a-2402-9d80-40b-e9e1-1de3-462d-24ab-fc67.ngrok-free.app/api/momo/ipn-handler
+    ipn-url:  https://e2cd7d00c806.ngrok-free.app/api/momo/ipn-handler
     access-key: mTCKt9W3eU1m39TW
     secret-key: SetA5RDnLHvt51AULf51DyauxUo3kDU6
     request-type: captureWallet

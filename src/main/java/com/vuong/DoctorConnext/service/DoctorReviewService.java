@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Builder
@@ -68,6 +71,20 @@ public class DoctorReviewService {
 
     //get top 3 review
     public List<DoctorReview> getTop3HighestRatedReviews() {
-        return doctorReviewRepository.findTop3ByOrderByRatingDescCreateAtDesc();
+        List<DoctorReview> allReviews = doctorReviewRepository.findAllByOrderByRatingDescCreateAtDesc();
+
+        Set<String> seenUserIds = new HashSet<>();
+        List<DoctorReview> uniqueReviews = new ArrayList<>();
+
+        for (DoctorReview review : allReviews) {
+            if (!seenUserIds.contains(review.getUserId())) {
+                uniqueReviews.add(review);
+                seenUserIds.add(review.getUserId());
+            }
+            if (uniqueReviews.size() == 3) break;
+        }
+
+        return uniqueReviews;
     }
+
 }

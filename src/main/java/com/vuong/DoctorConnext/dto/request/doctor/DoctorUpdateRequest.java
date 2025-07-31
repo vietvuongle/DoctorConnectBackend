@@ -15,7 +15,6 @@ public class DoctorUpdateRequest {
     String name;
     String email;
     MultipartFile image;
-    String experience;
     String fees;
     String speciality;
     String about;
@@ -24,5 +23,4 @@ public class DoctorUpdateRequest {
     String sex;
     String phone;
     String address;
-    String school;
 }

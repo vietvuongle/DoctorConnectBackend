@@ -8,12 +8,10 @@ import com.vuong.DoctorConnext.dto.response.clinic.ClinicResponse;
 import com.vuong.DoctorConnext.dto.response.doctor.DoctorResponse;
 import com.vuong.DoctorConnext.service.AuthenticationService;
 import com.vuong.DoctorConnext.service.ClinicService;
-import com.vuong.DoctorConnext.service.DoctorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +24,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ClinicController {
     ClinicService clinicService;
-
-    DoctorService doctorService;
 
     AuthenticationService authenticationService;
 
@@ -57,8 +53,6 @@ public class ClinicController {
     public ApiResponse<List<AppointmentResponse>> getAppointmentsByClinic() {
         ApiResponse<List<AppointmentResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setResult(clinicService.getAppointmentsByClinicId());
-
-        log.info("data {}", apiResponse);
 
         return apiResponse;
     }

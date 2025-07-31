@@ -15,7 +15,6 @@ public class DoctorResponse {
     String name;
     String email;
     String image;
-    String experience;
     String fees;
     String clinicId;
     String speciality;
@@ -24,7 +23,6 @@ public class DoctorResponse {
     String sex;
     String phone;
     String address;
-    String school;
     Set<String> roles;
 }
 

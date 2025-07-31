@@ -16,7 +16,6 @@ public class DoctorCreationRequest {
     @Size(min = 8, message = "INVALID_PASSWORD")
     String password;
     MultipartFile image;
-    String experience;
     String fees;
     String clinicId;
     String speciality;
@@ -25,5 +24,4 @@ public class DoctorCreationRequest {
     String sex;
     String phone;
     String address;
-    String school;
 }

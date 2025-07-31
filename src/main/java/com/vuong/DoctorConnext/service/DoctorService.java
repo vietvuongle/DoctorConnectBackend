@@ -118,6 +118,15 @@ public class DoctorService {
         return appointmentMapper.toAppointmentResponse(appointmentRepository.save(appointment));
     }
 
+    public AppointmentResponse paymentAppointment(String appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch hẹn"));
+
+        appointment.setPayment(true);
+
+        return appointmentMapper.toAppointmentResponse(appointmentRepository.save(appointment));
+    }
+
     public AppointmentResponse cancelAppointment(String appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch hẹn"));

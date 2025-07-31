@@ -41,7 +41,6 @@ public class DoctorController {
 
     DoctorScheduleService scheduleService;
 
-
     UserService userService;
 
     @PostMapping("/login")
@@ -60,7 +59,6 @@ public class DoctorController {
         return apiResponse;
     }
 
-
     @GetMapping("/getUser/{userId}")
     public ApiResponse<UserResponse> getUserByUserId(@PathVariable("userId") String userId) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
@@ -68,7 +66,6 @@ public class DoctorController {
 
         return apiResponse;
     }
-
 
     @GetMapping("/getDoctor")
     public ApiResponse<DoctorResponse> getDoctorById(){
@@ -78,18 +75,21 @@ public class DoctorController {
         return apiResponse;
     }
 
-
     @GetMapping("/appointments")
     public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor() {
         List<AppointmentResponse> appointments = doctorService.getAppointmentsByDoctorId();
         return ResponseEntity.ok(appointments);
     }
 
-
-
     @PutMapping("/appointment/confirm/{id}")
     public ResponseEntity<AppointmentResponse> confirmAppointment(@PathVariable String id) {
         AppointmentResponse response = doctorService.confirmAppointment(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/appointment/payment/{id}")
+    public ResponseEntity<AppointmentResponse> paymentAppointment(@PathVariable String id) {
+        AppointmentResponse response = doctorService.paymentAppointment(id);
         return ResponseEntity.ok(response);
     }
 
@@ -112,7 +112,6 @@ public class DoctorController {
         apiResponse.setResult("Password updated successfully");
 
         return apiResponse;
-
     }
 
     @PostMapping("/create-schedule")
@@ -129,7 +128,6 @@ public class DoctorController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate slotDate) {
 
         List<DoctorSchedule> availableSchedules = scheduleService.getAvailableSlots(doctorId, slotDate);
-        log.info("data {} ", availableSchedules);
 
         ApiResponse<List<DoctorSchedule>> response = new ApiResponse<>();
         response.setResult(availableSchedules);
@@ -146,7 +144,6 @@ public class DoctorController {
                 "message", "Hủy lịch thành công"
         ));
     }
-
 
 }
 

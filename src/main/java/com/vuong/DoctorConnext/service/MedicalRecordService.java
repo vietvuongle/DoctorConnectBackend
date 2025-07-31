@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,6 +54,7 @@ public class MedicalRecordService {
         log.info("fullData {}", dto);
         log.info("prescription {}", dto.getPrescriptions());
 
+        List<Prescription> savedPrescriptions = new ArrayList<>();
         for (PrescriptionRequest prescriptionDto : dto.getPrescriptions()) {
             Prescription p = Prescription.builder()
                     .medicalRecordId(savedRecord.getId())
@@ -61,23 +63,30 @@ public class MedicalRecordService {
                     .frequency(prescriptionDto.getFrequency())
                     .duration(prescriptionDto.getDuration())
                     .build();
+            savedPrescriptions.add(p);
             prescriptionRepository.save(p);
+        }
+
+        StringBuilder prescriptionList = new StringBuilder();
+        for (Prescription p : savedPrescriptions) {
+            prescriptionList.append(String.format(
+                    "- Thuốc: %s\n  + Liều dùng: %s\n  + Tần suất: %s\n  + Thời gian: %s ngày\n\n",
+                    p.getMedicineName(), p.getDosage(), p.getFrequency(), p.getDuration()
+            ));
         }
 
         Appointment appointment = appointmentRepository.findById(dto.getAppointmentId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy cuộc hẹn"));
 
-        log.info("appointment {} ", appointment);
-
-        log.info("email: ", appointment.getEmail());
 
         String subject = "Bệnh án của bạn đã được tạo";
         String content = String.format(
-                "Chào %s,\n\nBệnh án của bạn đã được tạo thành công.\n\nChẩn đoán: %s\nTriệu chứng: %s\nPhác đồ điều trị: %s\n\nTrân trọng.",
+                "Chào %s,\n\nBệnh án của bạn đã được tạo thành công.\n\nChẩn đoán: %s\nTriệu chứng: %s\nPhác đồ điều trị: %s\n\nĐơn thuốc:\n%s\nTrân trọng.",
                 appointment.getPatientName(),
                 savedRecord.getDiagnosis(),
                 savedRecord.getSymptoms(),
-                savedRecord.getTreatment()
+                savedRecord.getTreatment(),
+                prescriptionList.toString()
         );
 
         emailService.sendMedicalRecordEmail(appointment.getEmail(), subject, content);
